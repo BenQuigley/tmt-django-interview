@@ -13,6 +13,7 @@ class UserProfile(models.Model):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
+    avatar = models.ImageField(null=True)
 
     def get_full_name(self) -> str:
         """Combine the first and last name to a full name if both exist."""
