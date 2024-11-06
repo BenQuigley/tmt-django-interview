@@ -12,3 +12,24 @@ class UserProfile(models.Model):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
+
+    def get_full_name(self) -> str:
+        """Combine the first and last name to a full name if both exist."""
+        # ref: https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/
+        return " ".join([name for name in (self.first_name, self.last_name) if name])
+
+    def get_username(self):
+        """Retrieve the record's username."""
+        # FIXME Not sure why this function was requested; probably misunderstood this requirement.
+        return self.username
+
+    @property
+    def is_authenticated(self):
+        """Always return True.
+
+        For distinguishing between e.g. AnonymousUser.
+        Does not imply any permissions and doesn’t check if the user is active or has a valid session.
+
+        ref: https://docs.djangoproject.com/en/5.1/topics/auth/customizing/#django.contrib.auth.models.AbstractBaseUser.is_authenticated
+        """
+        return True
