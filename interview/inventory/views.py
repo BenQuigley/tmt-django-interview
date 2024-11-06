@@ -1,6 +1,6 @@
+from datetime import datetime
 from typing import Optional
 
-from dateutil import parser
 from interview.inventory.models import (Inventory, InventoryLanguage,
                                         InventoryTag, InventoryType)
 from interview.inventory.schemas import InventoryMetaData
@@ -41,7 +41,7 @@ class InventoryListCreateView(APIView):
         since_str = self.request.GET.get("since")
         if since_str:
             try:
-                since = parser.parse(since_str)
+                since = datetime.strptime(since_str, "%Y-%m-%d").date()
             except Exception:
                 # Don't send user-submitted data back in the response for security reasons;
                 # don't want to get into the business of sanitizing it to avoid spear-phishing etc.
