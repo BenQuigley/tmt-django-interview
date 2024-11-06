@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from django.db import models
 
 
@@ -8,7 +9,7 @@ class UserProfile(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     date_joined = models.DateTimeField(auto_now_add=True)
-    last_login = models.DateTimeField()
+    last_login = models.DateTimeField(null=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
@@ -33,3 +34,18 @@ class UserProfile(models.Model):
         ref: https://docs.djangoproject.com/en/5.1/topics/auth/customizing/#django.contrib.auth.models.AbstractBaseUser.is_authenticated
         """
         return True
+
+    @property
+    def is_active(self):
+        return True
+
+    def has_module_perms(self, *args, **kwargs):
+        # TODO implement me
+        return self.is_staff or self.is_admin or self.is_superuser
+
+    def has_perm(self, *args, **kwargs):
+        # TODO implement me
+        return self.is_staff or self.is_admin or self.is_superuser
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
