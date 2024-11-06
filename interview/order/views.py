@@ -28,16 +28,6 @@ class OrderRetrieveUpdateDeactivateView(APIView):
 
         return Response(serializer.data, status=200)
 
-    def patch(self, request: Request, *args, **kwargs) -> Response:
-        order = self.get_queryset(id=kwargs["id"])
-        serializer = self.serializer_class(order, data=request.data, partial=True)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=400)
-
-        serializer.save()
-
-        return Response(serializer.data, status=200)
-
     def delete(self, request: Request, *args, **kwargs) -> Response:
         """Use DELETE to deactivate an order."""
         order = self.get_queryset(id=kwargs["id"])
